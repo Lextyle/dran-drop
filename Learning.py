@@ -17,7 +17,7 @@ drag_sound = pygame.mixer.Sound("drag_sound.wav")
 drop_sound = pygame.mixer.Sound("drop_sound.wav")
 cells = []
 cells_pos = []
-y = 0
+y = 0 
 for i in range(window_height // image.get_height()):
 	x = 0
 	for i in range(window_width // image.get_width()):
