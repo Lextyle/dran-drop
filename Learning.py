@@ -20,6 +20,7 @@ cells = []
 cells_pos = []
 drag_sound = pygame.mixer.Sound("drag_sound.wav")
 drop_sound = pygame.mixer.Sound("drop_sound.wav")
+explosion_sound = pygame.mixer.Sound("explosion_sound.wav")
 cells = []
 cells_pos = []
 class Cell():
@@ -52,7 +53,7 @@ class Pusher():
 		self.move = False
 		self.mouse_last_pos = [0, 0]
 		self.rotate = False
-	def update(self, event, cells, pushers, rotaters):
+	def update(self, event, cells, pushers, rotaters, enemies):
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			if is_collision(event.pos[0], event.pos[1], 0, 0, self.x, self.y, self.image.get_width(), self.image.get_height()):
 				self.move = True
@@ -67,11 +68,15 @@ class Pusher():
 						move_block = True
 						for pusher in pushers:
 							if pusher != self:
-								if is_collision(cell.x, cell.y, self.image.get_width(), self.image.get_height(), pusher.x, pusher.y, self.image.get_width(), self.image.get_height()):
+								if pusher.x == cell.x and pusher.y == cell.y:
 									move_block = False
 									break
 						for rotater in rotaters:
-							if is_collision(cell.x, cell.y, self.image.get_width(), self.image.get_height(), rotater.x, rotater.y, self.image.get_width(), self.image.get_height()):
+							if rotater.x == cell.x and rotater.y == cell.y:
+								move_block = False
+								break
+						for enemy in enemies:
+							if enemy.x == cell.x and enemy.y == cell.y:
 								move_block = False
 								break
 						if move_block:
@@ -81,23 +86,8 @@ class Pusher():
 							drop_sound.play()
 						break
 				if not block_moved:
-					move_block = True
-					for pusher in pushers:
-						if pusher != self:
-							if is_collision(self.last_pos[0], self.last_pos[1], self.image.get_width(), self.image.get_height(), pusher.x, pusher.y, self.image.get_width(), self.image.get_height()):
-								move_block = False
-								self.x = pusher.x - self.image.get_width() - ((pusher.x - self.image.get_width()) % self.image.get_width())
-								self.y = pusher.y - self.image.get_height() - ((pusher.y - self.image.get_height()) % self.image.get_height())
-								break
-					for rotater in rotaters:
-						if is_collision(self.last_pos[0], self.last_pos[1], self.image.get_width(), self.image.get_height(), rotater.x, rotater.y, self.image.get_width(), self.image.get_height()):
-							move_block = False
-							self.x = rotater.x - self.image.get_width() - ((rotater.x - self.image.get_width()) % self.image.get_width())
-							self.y = rotater.y - self.image.get_height() - ((rotater.y - self.image.get_height()) % self.image.get_height())
-							break
-					if move_block:
-						self.x = self.last_pos[0]
-						self.y = self.last_pos[1]
+					self.x = self.last_pos[0]
+					self.y = self.last_pos[1]
 					drop_sound.play()
 				self.move = False
 		if event.type == pygame.MOUSEMOTION:
@@ -105,7 +95,7 @@ class Pusher():
 				self.x += event.pos[0] - self.mouse_last_pos[0]
 				self.y += event.pos[1] - self.mouse_last_pos[1]
 				self.mouse_last_pos = event.pos
-	def move_block(self, pushers, rotaters):
+	def move_block(self, pushers, rotaters, enemies):
 		if not self.move:
 			if self.rotate:
 				self.angle += 1
@@ -154,6 +144,12 @@ class Pusher():
 						if not (rotater.move) and is_collision(rotater.x, rotater.y, self.image.get_width(), self.image.get_height(), self.x, self.y, self.image.get_width(), self.image.get_height()):
 							self.y += 1
 							self.rotate = True
+				for enemy in enemies:
+					if is_collision(self.x, self.y, self.image.get_width(), self.image.get_height(), enemy.x, enemy.y, self.image.get_width(), self.image.get_height()):
+						enemies.pop(enemies.index(enemy))
+						pushers.pop(pushers.index(self))
+						explosion_sound.play()
+						break
 	def draw(self, window):
 		rotated_image = pygame.transform.rotate(self.image, self.angle)
 		window.blit(rotated_image, ((self.x + self.image.get_width() // 2) - rotated_image.get_width() // 2, (self.y + self.image.get_height() // 2) - rotated_image.get_height() // 2))	
@@ -165,7 +161,7 @@ class Rotater():
 		self.last_pos = [self.x, self.y]
 		self.angle = 0
 		self.move = False
-	def update(self, event, cells, pushers, rotaters):
+	def update(self, event, cells, pushers, rotaters, enemies):
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			if is_collision(event.pos[0], event.pos[1], 0, 0, self.x, self.y, self.image.get_width(), self.image.get_height()):
 				self.move = True
@@ -179,14 +175,18 @@ class Rotater():
 					if is_collision(self.x, self.y, self.image.get_width(), self.image.get_height(), cell.x + self.image.get_width() // 2, cell.y + self.image.get_height() // 2, 1, 1):
 						move_block = True
 						for pusher in pushers:
-							if is_collision(cell.x, cell.y, self.image.get_width(), self.image.get_height(), pusher.x, pusher.y, self.image.get_width(), self.image.get_height()):
+							if pusher.x == cell.x and pusher.y == cell.y:
 								move_block = False
 								break
 						for rotater in rotaters:
 							if rotater != self:
-								if is_collision(cell.x, cell.y, self.image.get_width(), self.image.get_height(), rotater.x, rotater.y, self.image.get_width(), self.image.get_height()):
+								if rotater.x == cell.x and rotater.y == cell.y:
 									move_block = False
 									break
+						for enemy in enemies:
+							if enemy.x == cell.x and enemy.y == cell.y:
+								move_block = False
+								break
 						if move_block:
 							self.x = cell.x
 							self.y = cell.y
@@ -201,13 +201,6 @@ class Rotater():
 							self.x = pusher.x - self.image.get_width() - ((pusher.x - self.image.get_width()) % self.image.get_width())
 							self.y = pusher.y - self.image.get_height() - ((pusher.y - self.image.get_height()) % self.image.get_height())
 							break
-					for rotater in rotaters:
-						if rotater != self:
-							if is_collision(self.last_pos[0], self.last_pos[1], self.image.get_width(), self.image.get_height(), rotater.x, rotater.y, self.image.get_width(), self.image.get_height()):
-								move_block = False
-								self.x = rotater.x - self.image.get_width() - ((rotater.x - self.image.get_width()) % self.image.get_width())
-								self.y = rotater.y - self.image.get_height() - ((rotater.y - self.image.get_height()) % self.image.get_height())
-								break
 					if move_block:
 						self.x = self.last_pos[0]
 						self.y = self.last_pos[1]
@@ -221,8 +214,29 @@ class Rotater():
 	def draw(self, window):
 		rotated_image = pygame.transform.rotate(self.image, self.angle)
 		window.blit(rotated_image, ((self.x + self.image.get_width() // 2) - rotated_image.get_width() // 2, (self.y + self.image.get_height() // 2) - rotated_image.get_height() // 2))
-pushers = [Pusher(40 * 9, 40 * 10, "RIGHT"), Pusher(40 * 10, 40 * 10, "LEFT"), Pusher(40 * 11, 40 * 10, "DOWN"), Pusher(40 * 11, 40 * 11, "UP")]
-rotaters = [Rotater(80, 80), Rotater(40, 80), Rotater(0, 80), Rotater(120, 80)]
+class Enemy():
+	def __init__(self, x, y):
+		self.image = pygame.image.load(r"images\enemy_image.png")
+		self.x = x
+		self.y = y
+	def draw(self, window):
+		window.blit(self.image, (self.x, self.y))
+class Button():
+	def __init__(self, x, y, image):
+		self.image = image
+		self.x = x
+		self.y = y
+	def update(self, event):
+		self.pressed = False
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			if event.button == 1:
+				if event.pos[0] in range(self.x, self.x + self.image.get_width()) and event.pos[1] in range(self.y, self.y + self.image.get_height()):
+					self.pressed = True
+	def draw(self, window):
+		window.blit(self.image, (self.x, self.y))
+pushers = [Pusher(40 * 9, 40 * 10, "LEFT"), Pusher(40 * 10, 40 * 10, "DOWN")]
+rotaters = [Rotater(80, 80), Rotater(40, 80)]
+enemies = [Enemy(window_width - 40, window_height - 40), Enemy(window_width - 40, 0)]
 cells = []
 y = 0
 for i in range(window_height // pygame.image.load(r"images\image.png").get_height()):
@@ -231,21 +245,35 @@ for i in range(window_height // pygame.image.load(r"images\image.png").get_heigh
 		cells.append(Cell(x, y, pygame.image.load(r"images\image.png").get_width(), pygame.image.load(r"images\image.png").get_height()))
 		x += pygame.image.load(r"images\image.png").get_width()
 	y += pygame.image.load(r"images\image.png").get_height()
+play = False
+play_button_image = pygame.image.load(r"images\play_button.png")
+play_button = Button(20, (window_height - 20) - play_button_image.get_height(), play_button_image)
 while True:
 	window.fill((52, 52, 52))
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			pygame.quit()
-		for pusher in pushers:
-			pusher.update(event, cells, pushers, rotaters)
-		for rotater in rotaters:
-			rotater.update(event, cells, pushers, rotaters)
+		if not play:
+			for pusher in pushers:
+				pusher.update(event, cells, pushers, rotaters, enemies)
+			for rotater in rotaters:
+				rotater.update(event, cells, pushers, rotaters, enemies)
+			play_button.update(event)
+	if play_button.pressed:
+		play = True
 	for cell in cells:
 		cell.draw(window)
-	for pusher in pushers:
-		pusher.move_block(pushers, rotaters)
+	if play:
+		for pusher in pushers:
+			pusher.move_block(pushers, rotaters, enemies)
 	for rotater in rotaters:
 		rotater.draw(window)
 	for pusher in pushers:
 		pusher.draw(window)
+	if not play:
+		play_button.draw(window)
+	for enemy in enemies:
+		enemy.draw(window)
+	if pushers == []:
+		pygame.quit()
 	pygame.display.update()
