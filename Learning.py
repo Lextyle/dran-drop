@@ -245,7 +245,7 @@ for i in range(window_height // pygame.image.load(r"images\image.png").get_heigh
 	y += pygame.image.load(r"images\image.png").get_height()
 def level_3():
 	pushers = [Pusher(40 * 9, 40 * 10, "LEFT")]
-	rotaters = [Rotater(80, 80), Rotater(40+, 80)]
+	rotaters = [Rotater(80, 80), Rotater(40, 80)]
 	enemies = [Enemy(window_width - 40, 40 * 10)]
 	play = False
 	play_button_image = pygame.image.load(r"images\play_button.png")
