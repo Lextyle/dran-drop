@@ -42,16 +42,8 @@ class Rotater():
 							drop_sound.play()
 						break
 				if not block_moved:
-					move_block = True
-					for pusher in pushers:
-						if is_collision(self.last_pos[0], self.last_pos[1], self.image.get_width(), self.image.get_height(), pusher.x, pusher.y, self.image.get_width(), self.image.get_height()):
-							move_block = False
-							self.x = pusher.x - self.image.get_width() - ((pusher.x - self.image.get_width()) % self.image.get_width())
-							self.y = pusher.y - self.image.get_height() - ((pusher.y - self.image.get_height()) % self.image.get_height())
-							break
-					if move_block:
-						self.x = self.last_pos[0]
-						self.y = self.last_pos[1]
+					self.x = self.last_pos[0]
+					self.y = self.last_pos[1]
 					drop_sound.play()
 				self.move = False
 		if event.type == MOUSEMOTION:
