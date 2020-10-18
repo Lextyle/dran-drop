@@ -63,51 +63,51 @@ class Pusher():
 				self.mouse_last_pos = event.pos
 	def move_block(self, pushers, rotaters, enemies):
 		if self.rotate:
-			self.angle -= 1
+			self.angle -= 2
 			if self.angle <= 0:
 				self.angle = 360
 			if self.angle % 90 == 0:
 				self.rotate = False
 		else:
 			if self.angle == 360:
-				self.x += 1
+				self.x += 2
 				for pusher in pushers:
 					if pusher != self:
 						if is_collision(pusher.x, pusher.y, self.image.get_width(), self.image.get_height(), self.x, self.y, self.image.get_width(), self.image.get_height()):
-							self.x -= 1
+							self.x -= 2
 				for rotater in rotaters:
 					if is_collision(rotater.x, rotater.y, self.image.get_width(), self.image.get_height(), self.x, self.y, self.image.get_width(), self.image.get_height()):
-						self.x -= 1
+						self.x -= 2
 						self.rotate = True
 			if self.angle == 270:
-				self.y += 1
+				self.y += 2
 				for pusher in pushers:
 					if pusher != self:
 						if is_collision(pusher.x, pusher.y, self.image.get_width(), self.image.get_height(), self.x, self.y, self.image.get_width(), self.image.get_height()):
-							self.y -= 1
+							self.y -= 2
 				for rotater in rotaters:
 					if is_collision(rotater.x, rotater.y, self.image.get_width(), self.image.get_height(), self.x, self.y, self.image.get_width(), self.image.get_height()):
-						self.y -= 1
+						self.y -= 2
 						self.rotate = True
 			if self.angle == 180:
-				self.x -= 1
+				self.x -= 2
 				for pusher in pushers:
 					if pusher != self:
 						if is_collision(pusher.x, pusher.y, self.image.get_width(), self.image.get_height(), self.x, self.y, self.image.get_width(), self.image.get_height()):
-							self.x += 1
+							self.x += 2
 				for rotater in rotaters:
 					if is_collision(rotater.x, rotater.y, self.image.get_width(), self.image.get_height(), self.x, self.y, self.image.get_width(), self.image.get_height()):
-						self.x += 1
+						self.x += 2
 						self.rotate = True
 			if self.angle == 90:
-				self.y -= 1
+				self.y -= 2
 				for pusher in pushers:
 					if pusher != self:
 						if is_collision(pusher.x, pusher.y, self.image.get_width(), self.image.get_height(), self.x, self.y, self.image.get_width(), self.image.get_height()):
-							self.y += 1
+							self.y += 2
 				for rotater in rotaters:
 					if is_collision(rotater.x, rotater.y, self.image.get_width(), self.image.get_height(), self.x, self.y, self.image.get_width(), self.image.get_height()):
-						self.y += 1
+						self.y += 2
 						self.rotate = True
 			for enemy in enemies:
 				if is_collision(self.x, self.y, self.image.get_width(), self.image.get_height(), enemy.x, enemy.y, self.image.get_width(), self.image.get_height()):
