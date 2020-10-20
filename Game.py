@@ -60,7 +60,7 @@ def level_3():
 				play_button.image = restart_button_image
 		if next_button.pressed:
 			button_pressed_sound.play()
-			level_3()
+			pygame.quit()
 		for cell in cells:
 			cell.draw(window)
 		if play:
@@ -160,7 +160,7 @@ def level_1():
 				play_button.image = restart_button_image
 		if next_button.pressed:
 			button_pressed_sound.play()
-			level_3()
+			level_2()
 		for cell in cells:
 			cell.draw(window)
 		if play:
