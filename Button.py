@@ -6,7 +6,6 @@ class Button():
 		self.y = y
 		self.pressed = False
 	def update(self, event):
-		self.pressed = False
 		if event.type == MOUSEBUTTONDOWN:
 			if event.button == 1:
 				if event.pos[0] in range(self.x, self.x + self.image.get_width()) and event.pos[1] in range(self.y, self.y + self.image.get_height()):
