@@ -52,12 +52,14 @@ def level_3():
 			if create_next_button:
 				next_button.update(event)
 		if play_button.pressed:
+			button_pressed_sound.play()
 			if play:
 				level_3()
 			else:
 				play = True
 				play_button.image = restart_button_image
 		if next_button.pressed:
+			button_pressed_sound.play()
 			level_3()
 		for cell in cells:
 			cell.draw(window)
@@ -100,12 +102,14 @@ def level_2():
 			if create_next_button:
 				next_button.update(event)
 		if play_button.pressed:
+			button_pressed_sound.play()
 			if play:
 				level_2()
 			else:
 				play = True
 				play_button.image = restart_button_image
 		if next_button.pressed:
+			button_pressed_sound.play()
 			level_3()
 		for cell in cells:
 			cell.draw(window)
@@ -148,12 +152,14 @@ def level_1():
 			if create_next_button:
 				next_button.update(event)
 		if play_button.pressed:
+			button_pressed_sound.play()
 			if play:
 				level_1()
 			else:
 				play = True
 				play_button.image = restart_button_image
 		if next_button.pressed:
+			button_pressed_sound.play()
 			level_3()
 		for cell in cells:
 			cell.draw(window)
