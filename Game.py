@@ -19,12 +19,12 @@ window_height = size()[1]
 window = pygame.display.set_mode((window_width, window_height), pygame.FULLSCREEN)
 cells = []
 y = 0
-for i in range(window_height // pygame.image.load(r"images\image.png").get_height()):
+for i in range(window_height // pygame.image.load(r"images\pusher_image.png").get_height()):
 	x = 0
-	for i in range(window_width // pygame.image.load(r"images\image.png").get_width()):
-		cells.append(Cell(x, y, pygame.image.load(r"images\image.png").get_width(), pygame.image.load(r"images\image.png").get_height()))
-		x += pygame.image.load(r"images\image.png").get_width()
-	y += pygame.image.load(r"images\image.png").get_height()
+	for i in range(window_width // pygame.image.load(r"images\pusher_image.png").get_width()):
+		cells.append(Cell(x, y, pygame.image.load(r"images\pusher_image.png").get_width(), pygame.image.load(r"images\pusher_image.png").get_height()))
+		x += pygame.image.load(r"images\pusher_image.png").get_width()
+	y += pygame.image.load(r"images\pusher_image.png").get_height()
 play_button_image = pygame.image.load(r"images\play_button.png")
 next_button_image = pygame.image.load(r"images\next_button.png")
 restart_button_image = pygame.image.load(r"images\restart_image.png")

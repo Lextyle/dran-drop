@@ -5,7 +5,7 @@ from pygame.transform import rotate as rotate_image
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION
 class Pusher():
 	def __init__(self, x, y, direction):
-		self.image = load_image(r"images\image.png")
+		self.image = load_image(r"images\pusher_image.png")
 		self.x = x
 		self.y = y
 		if direction == "RIGHT":
