@@ -224,6 +224,7 @@ def settings():
 	menu_button = Button(Surface_x + 10, Surface_y + 10, pygame.transform.scale(menu_button_image, (menu_buttons_width // 2, menu_buttons_height // 2)), pygame.transform.scale(hover_menu_button_image, (menu_buttons_width // 2, menu_buttons_height // 2)))
 	while True:
 		pygame.draw.rect(window, (60, 60, 60), (Surface_x, Surface_y, Surface_width, Surface_height))
+		pygame.draw.rect(window, (100, 100, 100), (Surface_x, Surface_y, Surface_width, Surface_height), 2)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
@@ -253,6 +254,7 @@ def menu(in_game = False):
 		if not in_game:
 			window.fill((33, 33, 33))
 		pygame.draw.rect(window, (60, 60, 60), (Surface_x, Surface_y, Surface_width, Surface_height))
+		pygame.draw.rect(window, (100, 100, 100), (Surface_x, Surface_y, Surface_width, Surface_height), 2)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
