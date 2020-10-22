@@ -44,9 +44,10 @@ def level_3():
 	rotaters = [Rotater(80, 80), Rotater(40, 80)]
 	enemies = [Enemy(window_width - 40, 40 * 10)]
 	play = False
-	play_button = Button(20, (window_height - 20) - play_button_image.get_height(), play_button_image)
-	next_button = Button((window_width - next_button_image.get_width()) - 20, (window_height - 20) - next_button_image.get_height(), next_button_image)
+	play_button = Button(20, (window_height - 20) - play_button_image.get_height(), play_button_image, play_button_image)
+	next_button = Button((window_width - next_button_image.get_width()) - 20, (window_height - 20) - next_button_image.get_height(), next_button_image, next_button_image)
 	create_next_button = False
+	show_menu = False
 	while True:
 		window.fill((52, 52, 52))
 		play_button.pressed = False
@@ -61,7 +62,7 @@ def level_3():
 					rotater.update(event, cells, pushers, rotaters, enemies)
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_ESCAPE:
-					menu(True)
+					show_menu = True
 			play_button.update(event)
 			if create_next_button:
 				next_button.update(event)
@@ -93,14 +94,18 @@ def level_3():
 		if pushers == []:
 			create_next_button = True
 		pygame.display.update()
+		if show_menu:
+			menu(True)
+			show_menu = False
 def level_2():
 	pushers = [Pusher(40 * 9, 40 * 10, "DOWN"), Pusher(40 * 10, 40 * 10, "DOWN")]
 	rotaters = [Rotater(80, 80)]
 	enemies = [Enemy(40 * 5, 40 * 10), Enemy(40, 0)]
 	play = False
-	play_button = Button(20, (window_height - 20) - play_button_image.get_height(), play_button_image)
-	next_button = Button((window_width - next_button_image.get_width()) - 20, (window_height - 20) - next_button_image.get_height(), next_button_image)
+	play_button = Button(20, (window_height - 20) - play_button_image.get_height(), play_button_image, play_button_image)
+	next_button = Button((window_width - next_button_image.get_width()) - 20, (window_height - 20) - next_button_image.get_height(), next_button_image, next_button_image)
 	create_next_button = False
+	show_menu = False
 	while True:
 		window.fill((52, 52, 52))
 		play_button.pressed = False
@@ -115,7 +120,7 @@ def level_2():
 					rotater.update(event, cells, pushers, rotaters, enemies)
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_ESCAPE:
-					menu(True)
+					show_menu = True
 			play_button.update(event)
 			if create_next_button:
 				next_button.update(event)
@@ -147,6 +152,9 @@ def level_2():
 		if pushers == []:
 			create_next_button = True
 		pygame.display.update()
+		if show_menu:
+			menu(True)
+			show_menu = False
 def level_1():
 	pushers = [Pusher(40 * 9, 40 * 10, "LEFT"), Pusher(40 * 10, 40 * 10, "DOWN")]
 	rotaters = [Rotater(80, 80), Rotater(40, 80)]
@@ -207,7 +215,7 @@ def level_1():
 			show_menu = False
 def game():
 	level_1()
-def settings(in_game):
+def settings():
 	jump_height = 10
 	Surface_width = 150
 	Surface_height = menu_buttons_height * menu_buttons_num + jump_height * (menu_buttons_num - 1)
@@ -221,6 +229,7 @@ def settings(in_game):
 				pygame.quit()
 			menu_button.update(event)
 		if menu_button.pressed:
+			button_pressed_sound.play()
 			break
 		menu_button.draw(window)
 		pygame.display.update()
@@ -258,7 +267,7 @@ def menu(in_game = False):
 				game()
 		if settings_button.pressed:
 			button_pressed_sound.play()
-			settings(in_game)
+			settings()
 		if exit_button.pressed:
 			button_pressed_sound.play()
 			pygame.quit()
