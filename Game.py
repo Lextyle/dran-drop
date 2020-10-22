@@ -246,7 +246,7 @@ def menu(in_game = False):
 	if in_game:
 		black_Surface = pygame.Surface((window_width, window_height))
 		black_Surface.fill((0, 0, 0))
-		black_Surface.set_alpha(50)
+		black_Surface.set_alpha(100)
 		window.blit(black_Surface, (0, 0))
 	while True:
 		settings_button.pressed = False
