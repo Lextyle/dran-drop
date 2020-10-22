@@ -213,7 +213,7 @@ def level_1():
 		if show_menu:
 			menu(True)
 			show_menu = False
-def game():
+def start_game():
 	level_1()
 def settings():
 	jump_height = 10
@@ -264,7 +264,7 @@ def menu(in_game = False):
 			if in_game:
 				break
 			else:
-				game()
+				start_game()
 		if settings_button.pressed:
 			button_pressed_sound.play()
 			settings()
