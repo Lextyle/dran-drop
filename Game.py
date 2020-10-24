@@ -74,6 +74,7 @@ def level_3():
 				play = True
 				play_button.not_hover_image = restart_button_image
 				play_button.hover_image = restart_button_image
+				play_button.image = play_button.hover_image
 		if next_button.pressed:
 			button_pressed_sound.play()
 			pygame.quit()
@@ -132,6 +133,7 @@ def level_2():
 				play = True
 				play_button.not_hover_image = restart_button_image
 				play_button.hover_image = restart_button_image
+				play_button.image = play_button.hover_image
 		if next_button.pressed:
 			button_pressed_sound.play()
 			level_3()
@@ -190,6 +192,7 @@ def level_1():
 				play = True
 				play_button.not_hover_image = restart_button_image
 				play_button.hover_image = restart_button_image
+				play_button.image = play_button.hover_image
 		if next_button.pressed:
 			button_pressed_sound.play()
 			level_2()
