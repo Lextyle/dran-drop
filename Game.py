@@ -1,13 +1,5 @@
-try:
-	import pygame
-except:
-	from os import system
-	system("pip install pygame")
-try:
-	from pyautogui import size
-except:
-	from os import system
-	system("pip install pyautogui")
+import pygame
+from pyautogui import size
 from Cell import *
 from Rotater import *
 from Pusher import *
