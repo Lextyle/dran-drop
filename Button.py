@@ -18,4 +18,5 @@ class Button():
 				if event.pos[0] in range(self.x, self.x + self.image.get_width()) and event.pos[1] in range(self.y, self.y + self.image.get_height()):
 					self.pressed = True
 	def draw(self, window):
+		self.pressed = False
 		window.blit(self.image, (self.x, self.y))
